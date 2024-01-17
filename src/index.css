@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --body-bg: #fff;
+  --main-text: #000;
+  --border-color: #5b5b5b;
+  --primary-color: rgba(135, 116, 225, 0.08);
+  --secondary-text-color: #707579;
+  --chat-bg: #fff;
+}
+
+.dark {
+  --body-bg: #212121;
+  --main-text: #fff;
+  --border-color: #0f0f0f;
+  --primary-color: #8774e1;
+  --secondary-text-color: #aaaaaa;
+  --chat-bg: #000;
+}
+
+@layer base {
+  body {
+    @apply bg-body-bg text-main-text;
+  }
+
+  html,
+  #root,
+  body {
+    @apply h-full;
+  }
+}
