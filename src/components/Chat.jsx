@@ -4,22 +4,42 @@ import { ChatInput } from './ChatInput';
 import { useSelector } from 'react-redux';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { ChatsSocket } from '../services/chatsSocket';
+import { useEffect, useMemo } from 'react';
 
 export const Chat = ({ user }) => {
   const { currentUser } = useCurrentUser();
-  const chatsSocket = new ChatsSocket();
+  const chatsSocket = useMemo(() => new ChatsSocket(), []);
 
-  const chats = useSelector((state) => state.chats) || [];
-  const currentChat = chats.find((chat) => chat.id === currentUser.id + user.id) || {
-    id: user.id + currentUser.id,
-    messages: [],
-  };
+  const chats = useSelector((state) => state.chats);
+  const currentChat = useMemo(
+    () =>
+      chats.find((chat) => chat.id === currentUser.id + user.id) || {
+        id: user.id + currentUser.id,
+        messages: [],
+      },
+    [chats, currentUser.id, user.id]
+  );
+
+  useEffect(() => {
+    const hasUnReadMessage = currentChat.messages.some(
+      (messageItem) => !messageItem.isRead && currentUser.id !== messageItem.senderId
+    );
+    if (!hasUnReadMessage) {
+      return;
+    }
+
+    chatsSocket.send({
+      ...currentChat,
+      messages: currentChat.messages.map((messageItem) => ({ ...messageItem, isRead: true })),
+    });
+  }, [currentChat, chatsSocket, currentUser]);
 
   const onSend = (data) => {
     const message = {
       created_at: new Date().getTime(),
       senderId: currentUser.id,
       text: data.message,
+      isRead: false,
     };
 
     const updatedCurrentChat = { ...currentChat, messages: [...currentChat.messages, message] };

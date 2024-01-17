@@ -2,8 +2,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { ImageLoader } from '../utils/image-loader';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UsersSocket } from '../services/usersSocket';
+import { useSelector } from 'react-redux';
 
 const schema = z.object({
   username: z
@@ -16,39 +17,59 @@ const schema = z.object({
 });
 
 export const RegisterForm = () => {
-  const socket = new UsersSocket();
+  const socket = useMemo(() => new UsersSocket(), []);
+  const users = useSelector((state) => state.users) || [];
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: {
+      isSubmitting,
+      errors: { username: usernameError, avatar: avatarError },
+    },
+    setError,
+    resetField,
+    watch,
   } = useForm({
     resolver: zodResolver(schema),
   });
+
+  const saveUser = (user) => {
+    const isUsernameExist = users.some((userItem) => userItem.username === user.username);
+    if (!isUsernameExist) {
+      socket.send(user);
+      return;
+    }
+    setError('username', { type: 'custom', message: 'User already exists.' });
+  };
 
   const onSubmit = (data) => {
     const id = Math.floor(new Date().getTime() * Math.random());
     const userData = { ...data, id, isActive: true };
 
-    if (!data.avatar.length) {
-      const user = { ...userData, avatar: undefined };
-      socket.send(user);
+    if (!data.avatar?.length) {
+      saveUser({ ...userData, avatar: undefined });
       return;
     }
 
     const avatar = data.avatar[0];
-    ImageLoader(avatar, { minHeight: 400, minWidth: 400 }).then((file) => {
-      const user = { ...userData, avatar: file };
-      socket.send(user);
-    });
+    ImageLoader(avatar, { minHeight: 400, minWidth: 400 })
+      .then((file) => {
+        saveUser({ ...userData, avatar: file });
+      })
+      .catch((errorText) => {
+        setError('avatar', { type: 'custom', message: errorText });
+      });
   };
 
   useEffect(() => () => socket.close(), []);
 
+  const avatar = watch('avatar')?.length;
+
   return (
     <section className="flex flex-col items-center justify-center w-full h-full">
       <h1 className="text-2xl mb-8">Registration</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col max-w-96 w-full gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col max-w-96 w-full gap-4 relative">
         <label className=" relative group">
           <input
             {...register('username')}
@@ -73,13 +94,28 @@ export const RegisterForm = () => {
           </svg>
           <span className="group-active:opacity-70 duration-300 transition-all">Upload avatar</span>
         </label>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className=" bg-primary-color rounded-md py-2 px-8 self-center hover:scale-105 duration-300 transition-all active:opacity-70"
-        >
-          Sign Up
-        </button>
+        <div className="flex justify-center items-center gap-4">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className=" bg-primary-color rounded-md py-2 px-8 self-center hover:scale-105 duration-300 transition-all active:opacity-70"
+          >
+            Sign Up
+          </button>
+
+          {!!avatar && (
+            <div onClick={() => resetField('avatar')} className="bg-red-500 rounded-md py-2 px-4 cursor-pointer">
+              X
+            </div>
+          )}
+        </div>
+
+        {(usernameError || avatarError) && (
+          <ul className="flex flex-col text-red-500 absolute -bottom-10 left-1/2 -translate-x-1/2 translate-y-1/2 text-center">
+            {usernameError && <li>{usernameError.message}</li>}
+            {avatarError && <li>{avatarError.message}</li>}
+          </ul>
+        )}
       </form>
     </section>
   );

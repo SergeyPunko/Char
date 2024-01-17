@@ -9,7 +9,8 @@ export class ChatsSocket extends Socket {
   send(chat) {
     const chats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHATS)) || [];
 
-    const restChats = chats.filter((chatItem) => chatItem.id === chats.id);
-    super.send([...restChats, chat]);
+    const restChats = chats.filter((chatItem) => chatItem.id !== chat.id);
+
+    super.send([chat, ...restChats]);
   }
 }

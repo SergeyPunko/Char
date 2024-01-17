@@ -4,9 +4,12 @@ import { setUsers } from '../store/usersSlice';
 import { UsersSocket } from '../services/usersSocket';
 import { ChatsSocket } from '../services/chatsSocket';
 import { addChats } from '../store/chatsSlice';
+import { useToggleUserStatus } from '../hooks/useToggleUserStatus';
 
 export const SessionStorageSocket = ({ children }) => {
   const dispatch = useDispatch();
+
+  useToggleUserStatus();
 
   useEffect(() => {
     window.dispatchEvent(new Event('storage'));

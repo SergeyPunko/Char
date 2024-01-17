@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const schema = z.object({
-  message: z.string(),
+  message: z.string().min(1).trim(),
 });
 
 export const ChatInput = ({ onSend }) => {

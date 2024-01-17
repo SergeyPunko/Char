@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 
 export const Message = ({ isExternalUser, message }) => {
   return (
@@ -12,7 +13,9 @@ export const Message = ({ isExternalUser, message }) => {
       )}
     >
       <p>{message.text}</p>
-      <span className="dark:text-white/60 text-sm self-end px-1 ml-auto">{message.created_at}</span>
+      <span className="dark:text-white/60 text-xs self-end px-1 ml-auto">
+        {dayjs(message.created_at).format('hh:mm A')}
+      </span>
     </li>
   );
 };

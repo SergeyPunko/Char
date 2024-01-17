@@ -8,8 +8,7 @@ export class UsersSocket extends Socket {
 
   send(user) {
     const users = JSON.parse(localStorage.getItem(this._type)) || [];
-    users.push(user);
-    super.send(users);
+    super.send([user, ...users]);
     sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
   }
 }
