@@ -47,10 +47,10 @@ export const Chat = ({ user }) => {
   };
 
   return (
-    <main className="flex-1 flex flex-col">
+    <main className="flex-1 flex flex-col max-h-[100dvh]">
       <ChatHeader user={user} />
-      <section className="flex-1 dark:bg-indigo-700/30 bg-blue-400/50">
-        <ul className="h-full flex flex-col overflow-auto max-w-2xl mx-auto p-4">
+      <section className="flex-1 dark:bg-indigo-700/30 bg-blue-400/50 overflow-auto">
+        <ul className="h-full flex flex-col max-w-2xl mx-auto p-4">
           {currentChat.messages.map((message) => (
             <Message key={message.created_at} message={message} isExternalUser={message.senderId !== currentUser.id} />
           ))}
