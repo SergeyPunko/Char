@@ -13,7 +13,7 @@ export const Message = ({ isExternalUser, message }) => {
       )}
     >
       <p>{message.text}</p>
-      <span className="dark:text-white/60 text-xs self-end px-1 ml-auto">
+      <span className=" text-secondary-text-color text-xs self-end px-1 ml-auto">
         {dayjs(message.created_at).format('hh:mm A')}
       </span>
     </li>

@@ -6,9 +6,10 @@
   --body-bg: #fff;
   --main-text: #000;
   --border-color: #5b5b5b;
-  --primary-color: rgba(135, 116, 225, 0.08);
+  --primary-color: #3390ec;
   --secondary-text-color: #707579;
   --chat-bg: #fff;
+  --tooltip: #b7b7b7;
 }
 
 .dark {
@@ -18,6 +19,7 @@
   --primary-color: #8774e1;
   --secondary-text-color: #aaaaaa;
   --chat-bg: #000;
+  --tooltip: #303030;
 }
 
 @layer base {

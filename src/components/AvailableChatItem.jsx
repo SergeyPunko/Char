@@ -16,7 +16,7 @@ export const AvailableChatItem = ({ user }) => {
   ).length;
 
   return (
-    <li className="flex flex-1 p-2 rounded-md relative" onClick={() => dispatch(setCurrentChat(user))}>
+    <li className="flex p-2 rounded-md relative" onClick={() => dispatch(setCurrentChat(user))}>
       <span
         className={classNames(
           'block absolute bg-green-500 h-1 w-1 rounded-full -left-1 top-1/2 -translate-y-1/2',
@@ -37,7 +37,7 @@ export const AvailableChatItem = ({ user }) => {
       </div>
       {lastMessage && (
         <div className="flex flex-col">
-          <span className="dark:text-white/60 text-xs">{dayjs(lastMessage.created_at).format('hh:mm A')}</span>
+          <span className="secondary-text-color text-xs">{dayjs(lastMessage.created_at).format('hh:mm A')}</span>
           {!!unreadMessages && (
             <span className="h-5 text-center min-w-5 bg-primary-color rounded-[0.625rem] px-2 flex-grow-0 text-sm !leading-5 self-center">
               {unreadMessages}

@@ -49,7 +49,7 @@ export const Chat = ({ user }) => {
   return (
     <main className="flex-1 flex flex-col">
       <ChatHeader user={user} />
-      <section className="flex-1 bg-gradient-to-tr from-indigo-950/60  to-black">
+      <section className="flex-1 dark:bg-indigo-700/30 bg-blue-400/50">
         <ul className="h-full flex flex-col overflow-auto max-w-2xl mx-auto p-4">
           {currentChat.messages.map((message) => (
             <Message key={message.created_at} message={message} isExternalUser={message.senderId !== currentUser.id} />

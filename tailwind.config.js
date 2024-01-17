@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -10,6 +11,7 @@ export default {
         'primary-color': 'var(--primary-color)',
         'secondary-text-color': 'var(--secondary-text-color)',
         'chat-bg': 'var(--chat-bg)',
+        'tooltip-color': 'var(--tooltip)',
       },
     },
   },
