@@ -2,7 +2,7 @@
   "name": "chat",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://SergeyPunko.github.io/Chat",
+  "homepage": "https://sergeypunko.github.io/Chat",
   "type": "module",
   "scripts": {
     "dev": "vite",
