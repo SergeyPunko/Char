@@ -6,7 +6,7 @@ import { ChatsSocket } from '../services/chatsSocket';
 import { addChats } from '../store/chatsSlice';
 import { useToggleUserStatus } from '../hooks/useToggleUserStatus';
 
-export const SessionStorageSocket = ({ children }) => {
+export const SessionStorageProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   useToggleUserStatus();

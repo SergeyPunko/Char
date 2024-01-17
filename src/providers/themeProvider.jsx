@@ -1,13 +1,13 @@
 import { useEffect, createContext, useState } from 'react';
+import { THEME, THEME_KEY } from '../utils/constants';
 
 const ThemeContext = createContext();
 
 const getTheme = () => {
-  const theme = localStorage.getItem('theme');
+  const theme = localStorage.getItem(THEME_KEY);
   if (!theme) {
-    // Default theme is taken as dark-theme
-    localStorage.setItem('theme', 'dark');
-    return 'dark';
+    localStorage.setItem(THEME_KEY, THEME.dark);
+    return THEME.dark;
   } else {
     return theme;
   }
@@ -17,17 +17,17 @@ const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(getTheme);
 
   const toggleTheme = () => {
-    if (theme === 'dark') {
-      setTheme('light');
+    if (theme === THEME.dark) {
+      setTheme(THEME.light);
     } else {
-      setTheme('dark');
+      setTheme(THEME.dark);
     }
   };
 
   useEffect(() => {
     const refreshTheme = () => {
-      localStorage.setItem('theme', theme);
-      document.body.classList.add(theme === 'dark' ? 'light' : 'dark');
+      localStorage.setItem(THEME_KEY, theme);
+      document.body.classList.add(theme === THEME.dark ? THEME.light : THEME.dark);
       document.body.classList.remove(theme);
     };
 

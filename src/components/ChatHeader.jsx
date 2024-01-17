@@ -17,9 +17,9 @@ export const ChatHeader = ({ user }) => {
         <UserAvatar user={user} />
         <p>{user.username}</p>
 
-        <div className="hidden md:block invisible group-hover:visible absolute group-hover:delay-500 transition-all duration-200 opacity-0 group-hover:opacity-100 bg-tooltip-color bottom-0 p-2 rounded-md translate-y-full text-sm">
-          <p>Username: {user.username}</p>
-          <p>Id: {user.id}</p>
+        <div className="hidden md:block invisible group-hover:visible absolute group-hover:delay-500 transition-all duration-200 opacity-0 group-hover:opacity-100 bg-tooltip-color bottom-0 p-2 rounded-md translate-y-full text-sm overflow-hidden">
+          <p className="text-ellipsis overflow-hidden whitespace-nowrap">Username: {user.username}</p>
+          <p className="text-ellipsis overflow-hidden whitespace-nowrap">Id: {user.id}</p>
         </div>
       </div>
     </header>

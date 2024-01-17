@@ -7,9 +7,11 @@ import { useTheme } from '../hooks/useTheme';
 
 export const AvailableChats = () => {
   const [searchQuery, setSearchQuery] = useState('');
+
   const users = useSelector((state) => state.users);
-  const { currentUser } = useCurrentUser();
   const currentChat = useSelector((state) => state.currentChat);
+
+  const { currentUser } = useCurrentUser();
   const { toggleTheme, theme } = useTheme();
 
   const filterUsers = useCallback(
@@ -22,7 +24,7 @@ export const AvailableChats = () => {
   return (
     <aside
       className={classNames('flex-1 md:max-w-96 border-r border-r-border-color h-full flex flex-col', {
-        'hidden md:block': currentChat,
+        'hidden md:flex': currentChat,
       })}
     >
       <div className="p-2">

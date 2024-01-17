@@ -4,12 +4,18 @@ import { setCurrentChat } from '../store/currentChatSlice';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
+import { useMemo } from 'react';
 
 export const AvailableChatItem = ({ user }) => {
   const { currentUser } = useCurrentUser();
   const dispatch = useDispatch();
-  const chats = useSelector((state) => state.chats) || [];
-  const currentChat = chats.find((chat) => chat.id === currentUser.id + user.id);
+  const chats = useSelector((state) => state.chats);
+
+  const currentChat = useMemo(
+    () => (chats || []).find((chat) => chat.id === currentUser.id + user.id),
+    [chats, currentUser, user]
+  );
+
   const lastMessage = [...(currentChat?.messages || [])].pop();
   const unreadMessages = currentChat?.messages.filter(
     (message) => !message.isRead && message.senderId !== currentUser.id
