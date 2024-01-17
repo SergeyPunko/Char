@@ -4,6 +4,7 @@ import { AvailableChatItem } from './AvailableChatItem';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import classNames from 'classnames';
 import { useTheme } from '../hooks/useTheme';
+import { THEME } from '../utils/constants';
 
 export const AvailableChats = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,6 +21,7 @@ export const AvailableChats = () => {
   );
 
   const availableChats = filterUsers();
+  const oppositeTheme = theme === THEME.dark ? THEME.light : THEME.dark;
 
   return (
     <aside
@@ -43,7 +45,7 @@ export const AvailableChats = () => {
       </ul>
 
       <button type="button" onClick={toggleTheme} className=" bg-primary-color py-2 px-4 rounded-xl m-4 self-center">
-        Toggle to {theme.toUpperCase()} theme
+        Toggle to {oppositeTheme.toUpperCase()} theme
       </button>
     </aside>
   );
