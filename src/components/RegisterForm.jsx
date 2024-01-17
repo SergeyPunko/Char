@@ -68,7 +68,7 @@ export const RegisterForm = () => {
       <h1 className="text-2xl mb-8">Registration</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col max-w-96 w-full gap-4 relative bg-tooltip-color dark:bg-transparent p-4 rounded-md"
+        className="flex flex-col max-w-96 w-full gap-4 relative bg-blue-400/50 dark:bg-transparent p-4 rounded-md"
       >
         <label className=" relative group">
           <input

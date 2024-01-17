@@ -15,8 +15,10 @@ export const useToggleUserStatus = () => {
   };
 
   useEffect(() => {
-    const setStatusInActive = () => updateUser({ ...currentUser, isActive: false }, users);
-    const setStatusActive = () => updateUser({ ...currentUser, isActive: true }, users);
+    const setStatusInActive = () =>
+      currentUser && Object.keys(currentUser).length && updateUser({ ...currentUser, isActive: false }, users);
+    const setStatusActive = () =>
+      currentUser && Object.keys(currentUser).length && updateUser({ ...currentUser, isActive: true }, users);
 
     window.addEventListener('beforeunload', setStatusInActive);
     window.addEventListener('load', setStatusActive);

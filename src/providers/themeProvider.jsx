@@ -27,8 +27,10 @@ const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const refreshTheme = () => {
       localStorage.setItem(THEME_KEY, theme);
-      document.body.classList.add(theme === THEME.dark ? THEME.light : THEME.dark);
-      document.body.classList.remove(theme);
+      document.body.classList.remove(THEME.light);
+      document.body.classList.remove(THEME.dark);
+
+      document.body.classList.add(theme);
     };
 
     refreshTheme();
