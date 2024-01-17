@@ -4,9 +4,10 @@ import { ChatInput } from './ChatInput';
 import { useSelector } from 'react-redux';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { ChatsSocket } from '../services/chatsSocket';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 export const Chat = ({ user }) => {
+  const chatRef = useRef();
   const { currentUser } = useCurrentUser();
   const chatsSocket = useMemo(() => new ChatsSocket(), []);
 
@@ -17,7 +18,12 @@ export const Chat = ({ user }) => {
         id: user.id + currentUser.id,
         messages: [],
       },
-    [chats, currentUser.id, user.id]
+    [chats, currentUser, user]
+  );
+
+  const scrollToNewMessages = useCallback(
+    () => setTimeout(() => chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' })),
+    []
   );
 
   useEffect(() => {
@@ -32,7 +38,9 @@ export const Chat = ({ user }) => {
       ...currentChat,
       messages: currentChat.messages.map((messageItem) => ({ ...messageItem, isRead: true })),
     });
-  }, [currentChat, chatsSocket, currentUser]);
+
+    scrollToNewMessages();
+  }, [currentChat, chatsSocket, currentUser, scrollToNewMessages]);
 
   const onSend = (data) => {
     const message = {
@@ -44,13 +52,14 @@ export const Chat = ({ user }) => {
 
     const updatedCurrentChat = { ...currentChat, messages: [...currentChat.messages, message] };
     chatsSocket.send(updatedCurrentChat);
+    scrollToNewMessages();
   };
 
   return (
     <main className="flex-1 flex flex-col max-h-[100dvh]">
       <ChatHeader user={user} />
-      <section className="flex-1 dark:bg-indigo-700/30 bg-blue-400/50 overflow-auto">
-        <ul className="h-full flex flex-col max-w-2xl mx-auto p-4">
+      <section ref={chatRef} className="flex-1 dark:bg-indigo-700/30 bg-blue-400/50 overflow-auto">
+        <ul className="min-h-full flex flex-col max-w-2xl mx-auto p-4">
           {currentChat.messages.map((message) => (
             <Message key={message.created_at} message={message} isExternalUser={message.senderId !== currentUser.id} />
           ))}
